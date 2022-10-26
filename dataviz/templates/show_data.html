@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Data-Viz | Data</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                {% for column in data_columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+            {% for row in data_values %}
+            <tr>
+                {% for row_value in row%}
+                <td>{{ row_value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+
+        <form id="graphform" method="get">
+            <label for="graph">Choose a Graph: </label>
+            <select id="graph" name="graph">
+                {% for graph_item in graph_list %}
+                <option value="{{graph_item}}">{{graph_item}}</option>
+                {% endfor %}
+            </select>
+            <label for="ycolumn">Y Axis: </label>
+            <select id="ycolumn" name="ycolumn">
+                {% for ycolumn in data_columns %}
+                <option value="{{ycolumn}}">{{ycolumn}}</option>
+                {% endfor %}
+            </select>
+            <label for="xcolumn">X Axis: </label>
+            <select id="xcolumn" name="xcolumn">
+                <option value = " "> </option>
+                {% for xcolumn in data_columns %}
+                <option value="{{xcolumn}}">{{xcolumn}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Visualize</button>
+        </form>
+        {% if plot %}
+        <img src="data:image/png;base64,{{ plot|safe }}">
+        {% endif %}
+
+    </body>
+</html>

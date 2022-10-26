@@ -1,19 +1,24 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataViz|Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DataViz|Home</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap"
+            rel="stylesheet">
+        <style>
        
         body{
             /* background-color:rgba(28,26,26,255); */
-            background-image: url("{% static 'background.gif' %}") no-repeat
+            /* background: url("{% static 'background.jpg' %}"); */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
         }
 
         #headingdiv{
@@ -58,34 +63,45 @@
         }
 
     </style>
-    <script>
+        <script>
 
         function uploadCsv(){
 
             
         }
     </script>
-</head>
-<body>
-    <div id = headingdiv>
-        Data Viz
-    </div>
-    <div id="descriptionandgifcontainer">
-        <div id = "descriptionandupload">
-            <div id = description>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was pop
+    </head>
+    <body>
+        <div id= container>
+            <div id= headingdiv>
+                Data Viz
             </div>
-            <div id = uploaddiv>
-                <form action="/upload" method="post" enctype="multipart/form-data" action = "#">
-                    {% csrf_token%}
-                    <input type="file" name="csvFile" id="uploadid" onchange="form.submit()">
-                </form>
+            <div id="descriptionandgifcontainer">
+                <div id="descriptionandupload">
+                    <div id= description>
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem Ipsum has been the
+                        industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and
+                        scrambled it to make a type specimen book. It has
+                        survived not only five centuries, but also the leap into
+                        electronic typesetting, remaining essentially unchanged.
+                        It was pop
+                    </div>
+                    <div id= uploaddiv>
+                        <form action="/upload" method="post"
+                            enctype="multipart/form-data">
+                            {% csrf_token%}
+                            <input type="file" name="csvFile" id="uploadid"
+                                onchange="form.submit()">
+                        </form>
+                    </div>
+                </div>
+                <div id= gifdiv>
+                    <img id= graphgif src="{% static 'dataviz-unscreen.gif' %}"
+                        alt="">
+                </div>
             </div>
-         </div>
-        <div id = gifdiv>
-            <img id = graphgif src="{% static 'dataviz.gif' %}" alt="">
         </div>
-    </div>
-
-</body>
+    </body>
 </html>

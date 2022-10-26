@@ -20,5 +20,6 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home ,name = "home"),
-    path('upload',views.upload , name = "upload")
+    path('upload',views.upload , name = "upload"),
+    path('<csv_uuid>',views.show_data,name ="showdata")
 ]
