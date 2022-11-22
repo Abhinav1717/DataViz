@@ -26,15 +26,27 @@ sample_files_path = "./static/sample_datasets"
 
 #Loading Sample Datasets
 files = glob.glob(sample_files_path + "/*.csv")
+print(files)
+
+flag = None
+if( "\\" in files[0]):
+    flag = "Windows"
+else:
+    flag = "Linux"
+
 for file in files:
     with open(file,"rb") as csvfile_object:
         csvfile = BytesIO(csvfile_object.read())
-        filename = file.split('\\')[-1].split('.')[0]
+        filename = None
+        
+        if(flag == "Windows"):
+            filename = file.split('\\')[-1].split('.')[0]
+        else:
+            filename = file.split('/')[-1].split('.')[0]
         sample_file__list.append(filename)
         sample_files_image_path_dict[filename] = "sample_datasets_images/"+filename+".jpg"
         uuid_file_dict[filename] = csvfile
         uuid_file_last_modified_datetime_dict[filename] = datetime.datetime.now()
-
 
 
 #Graph Configurations
