@@ -1,165 +1,180 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>DataViz|Home</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap"
-            rel="stylesheet">
-        <style>
-       
-        body{
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataViz|Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Open+Sans&display=swap');
+
+        body {
             /* background-color:rgba(28,26,26,255); */
-            /* background: url("{% static 'background.jpg' %}"); */
+            background: url('{% static "bgwhite.webp" %}');
+            font-family: 'Open Sans', sans-serif;
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
         }
 
-        #headingdiv{
-            width:100%;
-            font-size:4rem;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-family: 'Dancing Script', cursive;
+        #headingdiv {
+            width: 100%;
+            font-size: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Lato', sans-serif;
             margin-top: 2rem;
-            margin-bottom:2rem;
+            margin-bottom: 2rem;
 
         }
-        #descriptionandgifcontainer{
-            display:flex;
-            flex-direction:row;
-            width:100%;
-            justify-content:center;
-            align-items:center;
+
+        #descriptionandgifcontainer {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
         }
-        #descriptionandupload{
+
+        #descriptionandupload {
             width: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        #description{
-            display:flex;
+
+        #description {
+            display: flex;
             align-items: center;
-            justify-content:center;
+            justify-content: center;
             text-align: center;
-            margin:2rem;
-            font-size:1.2rem;
-        }
-        #gifdiv{
-            width:50%;
-            border-left: 0.1rem solid black;
-        }
-        #graphgif{
-            width:100%;
+            margin: 2rem;
+            font-size: 1.2rem;
         }
 
-        #sampledatasetsdivwithheading{
+        #gifdiv {
+            width: 50%;
+            border-left: 0.1rem solid black;
+        }
+
+        #graphgif {
+            width: 100%;
+        }
+
+        #sampledatasetsdivwithheading {
             width: 100%;
             text-align: center;
         }
-        #sample_datasets_container{
-            display:flex;
+
+        #sample_datasets_container {
+            display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
-            width:90%;
+            width: 90%;
             margin: 5%;
             overflow-x: scroll;
         }
+
         #sample_datasets_container::-webkit-scrollbar {
             display: none;
         }
 
+
         /* Hide scrollbar for IE, Edge and Firefox */
         .sample_datasets_container {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
 
-        .sample_dataset_div{
-            display:flex;
+        .sample_dataset_div {
+            display: flex;
             flex-direction: column;
             width: 30%;
+            background: white;
             overflow-wrap: normal;
             text-align: center;
             /* border-style: groove; */
             border-radius: 5%;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
             padding: 2%;
-            margin:1%
-            
+            margin: 2%
         }
-        
-        .sample_dataset_div:hover{
+
+        .sample_dataset_div:hover {
             cursor: pointer;
         }
 
-        .sample_dataset_image{ 
+        .sample_dataset_image {
             margin: 5%;
         }
     </style>
-        <script>
-            function redirectToDataset(key){
-                console.log(key)
-                var path = "/"+key;
-                window.location.href=path;
-            }
+    <script>
+        function redirectToDataset(key) {
+            console.log(key)
+            var path = "/" + key;
+            window.location.href = path;
+        }
     </script>
-    </head>
-    <body>
-        <div id= container>
-            <div id= headingdiv>
-                Data Viz
-            </div>
-            <div id="descriptionandgifcontainer">
-                <div id="descriptionandupload">
-                    <div id= description>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only five centuries, but also the leap into
-                        electronic typesetting, remaining essentially unchanged.
-                        It was pop
-                    </div>
-                    <div id= uploaddiv>
-                        <form action="/upload" method="post"
-                            enctype="multipart/form-data">
-                            {% csrf_token%}
-                            <input type="file" name="csvFile" id="uploadid"
-                                onchange="form.submit()">
-                        </form>
-                    </div>
-                    <br>
-                    OR 
-                    <br>
-                    <br>
-                    <div id="sampledatasetsdivwithheading">
-                        <strong> Choose from one the sample datasets below </strong>
-                        <div id = "sample_datasets_container" >
-                            {% for key, value in sample_files_image_path_dict.items %}
-                            <div class = "sample_dataset_div" >
-                                <img id = "{{key}}" class = "sample_dataset_image" src="{% static value %}" alt="{{ key }}" onclick="redirectToDataset(this.id)">
-                                {{ key }}
-                            </div>
-                            {% endfor %}
+</head>
+
+<body>
+    <div id=container>
+        <div id=headingdiv>
+            Data Viz
+        </div>
+        <div id="descriptionandgifcontainer">
+            <div id="descriptionandupload">
+                <div id=description>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s,
+                    when an unknown printer took a galley of type and
+                    scrambled it to make a type specimen book. It has
+                    survived not only five centuries, but also the leap into
+                    electronic typesetting, remaining essentially unchanged.
+                    It was pop
+                </div>
+                <div id=uploaddiv>
+                    <form action="/upload" method="post" enctype="multipart/form-data">
+                        {% csrf_token%}
+                        <input type="file" class="button" name="csvFile" id="uploadid" onchange="form.submit()">
+                    </form>
+                </div>
+                <br>
+                <span style="font-size: 1.5rem; font-family:'Lato', sans-serif;">OR</span>
+                <br>
+                <br>
+                <div id="sampledatasetsdivwithheading">
+                    <span style="font-size: 1.2rem;">
+                        Choose from one the sample datasets below
+                    </span>
+                    <div id="sample_datasets_container">
+                        {% for key, value in sample_files_image_path_dict.items %}
+                        <div class="sample_dataset_div">
+                            <img id="{{key}}" class="sample_dataset_image" src="{% static value %}" alt="{{ key }}"
+                                onclick="redirectToDataset(this.id)">
+                            {{ key }}
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
-                <div id= gifdiv>
-                    <img id= graphgif src="{% static 'dataviz-unscreen.gif' %}"
-                        alt="">
-                </div>
+            </div>
+            <div id=gifdiv>
+                <img id=graphgif src="{% static 'dataviz.gif' %}" alt="">
             </div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>
