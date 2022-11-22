@@ -13,12 +13,19 @@ def plot_buffer_to_utf8(plot_buffer):
 
     return plot_utf8
 
-
 def get_line_graph(data, x_column, y_column):
     if (x_column == " "):
         plt.plot(data[y_column])
     else:
-        plt.plot(data[x_column], data[y_column])
+        x_column_data = data[x_column]
+        y_column_data = data[y_column]
+        zippedXY = list(zip(x_column_data,y_column_data))
+        zippedXY.sort(key=lambda x: x[0])
+        
+        x_column_data = [x for (x,y) in zippedXY]
+        y_column_data = [y for (x,y) in zippedXY]
+
+        plt.plot(x_column_data,y_column_data)
         plt.xlabel(x_column)
     plt.grid(b='on')
     plt.ylabel(y_column)

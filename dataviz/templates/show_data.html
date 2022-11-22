@@ -5,6 +5,20 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Data-Viz | Data</title>
+
+        <script>
+            function downloadImage(plotb64encoded){
+
+                var image = document.getElementById("plot_image")
+                
+                image_data = image.src
+                var element = document.createElement("a")
+                element.href = image_data
+                element.download = "plot.png"
+                element.click()
+            }
+
+        </script>
     </head>
     <body>
         <table>
@@ -45,7 +59,8 @@
             <button type="submit">Visualize</button>
         </form>
         {% if plot %}
-        <img src="data:image/png;base64,{{ plot|safe }}">
+        <img id = "plot_image" src="data:image/png;base64,{{ plot|safe }}">
+        <button onclick="downloadImage()">Download Plot</button>
         {% endif %}
 
     </body>
