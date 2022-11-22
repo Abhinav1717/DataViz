@@ -146,6 +146,23 @@
         function redirectToHome(){
             window.location.href = "/"
         }
+        function changeDescription(){
+            var isplotThere = "{{isGraphPlotted}}"
+            var description = "{{description}}"
+            var error = "{{Error}}"
+            console.log("Hi")
+            if(isplotThere){
+                document.getElementById("desc").innerHTML = description
+            }
+
+            if(error){
+                var element = document.getElementById('desc')
+                element.innerHTML = description
+                element.style.color = "red"
+            }
+            
+
+        }
     </script>
 </head>
 
@@ -189,12 +206,6 @@
                     <option value="{{xcolumn}}">{{xcolumn}}</option>
                     {% endfor %}
                 </select>
-                <label for="style">Graph Style: </label>
-                <select id="style" class="selector" name="style">
-                    {% for style in plot_style_list %}
-                    <option value="{{style}}">{{style}}</option>
-                    {% endfor %}
-                </select>
                 <div style="display: flex; flex-direction: row; margin-left: 5rem; margin-right: 5rem;">
                     <button type="submit" class="button">Visualize</button>
                     <button type="button" class="button" onclick="redirectToHome()">Go Back</button>
@@ -207,7 +218,7 @@
         <div id="plot">
             {% if plot %}
             <div id="onlyplot">
-                <img id="plot_image" style="width: 100%; margin-left: 1rem; margin-bottom: 1rem;" src="data:image/png;base64,{{ plot|safe }}">
+                <img id="plot_image" style="width: 95%; margin-left: 1rem; margin-bottom: 1rem;" src="data:image/png;base64,{{ plot|safe }}">
             </div>
             <div id="onlybuttons">
                 <button class="button" onclick="downloadImage()">Download Plot</button>
@@ -217,17 +228,14 @@
             {% endif %}
         </div>
         <div id="desc">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, iste debitis, magnam voluptas, nobis sequi
-            obcaecati inventore quibusdam soluta fuga in quaerat reprehenderit perspiciatis iure laborum optio ad quos
-            praesentium fugit! Ratione saepe asperiores, aspernatur dolorum deleniti quia quibusdam voluptatibus
-            incidunt tempora magnam eos voluptatem excepturi recusandae ex nisi perspiciatis autem veniam. Inventore
-            fugiat voluptatem eum soluta! Quam corrupti dicta obcaecati. Ipsam molestiae sint, autem iure tempore magnam
-            quaerat necessitatibus placeat harum, voluptatum soluta exercitationem nam nisi asperiores numquam aperiam
-            minus esse, corrupti maxime porro repellat earum libero obcaecati! Odit dolor harum molestias iste soluta
-            inventore nemo? Velit, modi corporis?
+            Choose A Graph Type, X axis and Y axis to plot the graph of your choice.After plotting the graph you can also train a linear regression or logistic regression model on your data
         </div>
     </div>
 
 </body>
-
+<head>
+    <script>
+        changeDescription()
+    </script>
+</head>
 </html>

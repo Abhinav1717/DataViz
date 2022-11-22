@@ -7,14 +7,15 @@ from io import BytesIO
 def plot_buffer_to_utf8(plot_buffer):
     plot_buffer.seek(0)
     plot_png = plot_buffer.getvalue()
-    plot_buffer.close()
-
     plot_base64 = b64encode(plot_png)
     plot_utf8 = plot_base64.decode('utf-8')
 
     return plot_utf8
+    
 # Line Graph plot
 def get_line_graph(data, x_column, y_column,style):
+    plt.clf()
+    plt.close()
     plt.style.use(style)
     if (x_column == " "):
         plt.plot(data[y_column[0]])
@@ -30,11 +31,13 @@ def get_line_graph(data, x_column, y_column,style):
     plt.grid(b='on')
     plt.xticks(rotation=90)
     plt.ylabel(y_column)
+    # plt.ticklabel_format(style="plain")
     plot_buffer = BytesIO()
-    plt.savefig(plot_buffer, format="png")
+    plt.savefig(plot_buffer, format="png",bbox_inches="tight")
     plt.close()
 
     encoded_plot = plot_buffer_to_utf8(plot_buffer)
+    plot_buffer.close()
     return encoded_plot
 
 # Bar graph
@@ -49,7 +52,7 @@ def get_bar_graph(data, x_column, y_column,style):
     plt.xticks(rotation=90)
     plt.ylabel(y_column)
     plot_buffer = BytesIO()
-    plt.savefig(plot_buffer, format="png")
+    plt.savefig(plot_buffer, format="png",bbox_inches="tight")
     plt.close()
 
     encoded_plot = plot_buffer_to_utf8(plot_buffer)
@@ -66,7 +69,7 @@ def get_scatter_plot(data, x_column, y_column,style):
     plt.xticks(rotation=90)
     plt.ylabel(y_column)
     plot_buffer = BytesIO()
-    plt.savefig(plot_buffer, format="png")
+    plt.savefig(plot_buffer, format="png",bbox_inches="tight")
     plt.close()
 
     encoded_plot = plot_buffer_to_utf8(plot_buffer)
@@ -83,7 +86,7 @@ def get_hexbin_plot(data,x_column,y_column,style):
     plt.xticks(rotation=90)
     plt.ylabel(y_column)
     plot_buffer = BytesIO()
-    plt.savefig(plot_buffer, format="png")
+    plt.savefig(plot_buffer, format="png",bbox_inches="tight")
     plt.close()
 
     encoded_plot = plot_buffer_to_utf8(plot_buffer)
@@ -102,7 +105,7 @@ def get_stem_plot(data, x_column, y_column,style):
     plt.ylabel(y_column)
     plt.xticks(rotation=90)
     plot_buffer = BytesIO()
-    plt.savefig(plot_buffer, format="png")
+    plt.savefig(plot_buffer, format="png",bbox_inches="tight")
     plt.close()
 
     encoded_plot = plot_buffer_to_utf8(plot_buffer)
@@ -121,7 +124,7 @@ def get_hist2d_plot(data, x_column, y_column,style):
     plt.ylabel(y_column)
     plt.xticks(rotation=90)
     plot_buffer = BytesIO()
-    plt.savefig(plot_buffer, format="png")
+    plt.savefig(plot_buffer, format="png",bbox_inches="tight")
     plt.close()
 
     encoded_plot = plot_buffer_to_utf8(plot_buffer)
@@ -139,7 +142,7 @@ def get_triplot_plot(data, x_column, y_column,style):
     plt.ylabel(y_column)
     plt.xticks(rotation=90)
     plot_buffer = BytesIO()
-    plt.savefig(plot_buffer, format="png")
+    plt.savefig(plot_buffer, format="png",bbox_inches="tight")
     plt.close()
 
     encoded_plot = plot_buffer_to_utf8(plot_buffer)

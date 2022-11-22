@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>DataViz | Linear Regression</title>
+        <title>DataViz | Logistic Regression</title>
         <script>
         function downloadModel(model_buffer){
             let link = URL.createObjectURL(new Blob([model_buffer], {type : 'text/plain;base64'}));
@@ -17,7 +17,6 @@
             a.download = "model.pickle"
             a.click()
         }
-
         function redirectToHome(){
             window.location.href = "/"
         }
@@ -90,11 +89,11 @@
         <div id="maincontainer">
             <div id="left">
                 <div>
-                    <h1 style="margin: auto auto; margin-bottom: 2rem;">Linear
+                    <h1 style="margin: auto auto; margin-bottom: 2rem;">Logistic
                         Regression</h1>
                 </div>
                 <div>
-                    <form id="linearRegressionForm" method="get" style="width:
+                    <form id="logisticRegressionForm" method="get" style="width:
                         80%;">
                         <label for="target_column">Choose the Target Column:
                         </label>
@@ -122,19 +121,18 @@
                 <div>
                     {% if error == True %}
                     <h1 style="color:red">Your Data is not fit for Training
-                        Linear
+                        Logistic
                         Regression model.</h1>
                     {% elif no_error == True %}
-                    <h1> Training RMSE is {{training_rmse}}</h1>
-                    <h1> Test RMSE is {{test_rmse}}</h1>
-                    <button id="{{model}}" class="button" onclick="downloadModel(this.id)">Download
+                    <h1> Training Accuracy is {{training_accuracy}}</h1>
+                    <h1> Test Accuracy is {{test_accuracy}}</h1>
+                    <button id="{{model}}" class = "button" onclick="downloadModel(this.id)">Download
                         Model</button>
-                    
                     {% endif %}
                 </div>
             </div>
             <div>
-                <img src="{% static 'linear_regression.svg' %}" alt="">
+                <img src="{% static 'logistic_regression.svg' %}" alt="">
             </div>
         </div>
     </body>
