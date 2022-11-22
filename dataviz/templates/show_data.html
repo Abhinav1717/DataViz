@@ -66,6 +66,13 @@
                 <option value="{{xcolumn}}">{{xcolumn}}</option>
                 {% endfor %}
             </select>
+            <label for="style">Graph Style: </label>
+            <select id="style" name="style">
+                <option value = " "> </option>
+                {% for style in plot_style_list %}
+                <option value="{{style}}">{{style}}</option>
+                {% endfor %}
+            </select>
             <button type="submit">Visualize</button>
         </form>
         <button id = "{{csv_uuid}}" onclick="redirectToLinearRegression(this.id)">Fit Linear Regression Model</button>

@@ -14,7 +14,7 @@ import glob
 import matplotlib
 matplotlib.use('Agg')
 
-TIMEOUT_TIME = 20
+TIMEOUT_TIME = 300
 
 uuid_file_dict = {}
 uuid_file_last_modified_datetime_dict = {}
@@ -48,14 +48,26 @@ for file in files:
         uuid_file_dict[filename] = csvfile
         uuid_file_last_modified_datetime_dict[filename] = datetime.datetime.now()
 
+#print(sample_file__list)
 
-#Graph Configurations
-graph_list = ["Line Graph", "Bar Graph","Scatter Plot","HeXBin Plot"]
+graph_list = ["Line Graph", "Bar Graph","Scatter Plot","HeXBin Plot","Stem Plot", "2D Histogram", "TriPlot"]
+# Which matplotlib style sheet to use
+style_list = ['Solarize_Light2', '_classic_test_patch', '_mpl-gallery', 
+            '_mpl-gallery-nogrid', 'bmh', 'classic', 'dark_background', 
+            'fast', 'fivethirtyeight', 'ggplot', 'grayscale', 'seaborn-v0_8', 
+            'seaborn-v0_8-bright', 'seaborn-v0_8-colorblind', 'seaborn-v0_8-dark', 
+            'seaborn-v0_8-dark-palette', 'seaborn-v0_8-darkgrid', 'seaborn-v0_8-deep', 
+            'seaborn-v0_8-muted', 'seaborn-v0_8-notebook', 'seaborn-v0_8-paper', 
+            'seaborn-v0_8-pastel', 'seaborn-v0_8-poster', 'seaborn-v0_8-talk', 
+            'seaborn-v0_8-ticks', 'seaborn-v0_8-white', 'seaborn-v0_8-whitegrid']
 graph_function_dict = {
     "Line Graph": graphs.get_line_graph, 
     "Bar Graph": graphs.get_bar_graph,
     "Scatter Plot" : graphs.get_scatter_plot,
-    "HeXBin Plot" : graphs.get_hexbin_plot}
+    "HeXBin Plot" : graphs.get_hexbin_plot,
+    "Stem Plot" : graphs.get_stem_plot,
+    "2D Histogram" : graphs.get_hist2d_plot,
+    "TriPlot" : graphs.get_triplot_plot}
 
 
 #Decorator for checking and deleting files that are not accessed recently
@@ -111,12 +123,15 @@ def show_data(request, csv_uuid):
         param = {"data_columns": list(data.columns), "data_values": list(
             data.head().values), "graph_list": graph_list}
         param["plot"] = None
+        param["plot_style_list"] = style_list
         if (request.method == 'GET'):
             graph_type = request.GET.get("graph")
             y_column = request.GET.get("ycolumn")
             x_column = request.GET.get("xcolumn")
+            # getting style param
+            style = request.GET.get("style")
             if (graph_type is not None):
-                plot = get_graph(data, graph_type, x_column, y_column)
+                plot = get_graph(data, graph_type, x_column, y_column, style)
                 param["plot"] = plot
         
         param['csv_uuid'] = csv_uuid
@@ -151,12 +166,11 @@ def load_data(uuid_key):
 
     return data
 
-#Function to plot and return the graph to show_data
-def get_graph(data, graph_type, x_column, y_column):
+def get_graph(data, graph_type, x_column, y_column, style):
 
     plot = None
     if graph_type in graph_function_dict:
         plot = graph_function_dict[graph_type](
-            data=data, x_column=x_column, y_column=y_column)
+            data=data, x_column=x_column, y_column=y_column, style=style)
     
     return plot
