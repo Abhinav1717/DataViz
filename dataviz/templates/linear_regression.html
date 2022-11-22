@@ -7,6 +7,21 @@
     <title>DataViz | Linear Regression</title>
 </head>
 <body>
-    
+    <h1>Linear Regression</h1> 
+    <form id="linearRegressionForm" method="get">
+        <label for="target_column">Choose the Target Column: </label>
+        <select id="target_column" name="target_column" required>
+            {% for column in column_list %}
+            <option value="{{column}}">{{column}}</option>
+            {% endfor %}
+        </select>
+        <label for="train_test_split">Train Test Split Ratio: </label>
+        <select id="train_test_split" name="train_test_split" required>
+            <option value="0.7">0.7</option>
+            <option value="0.8">0.8</option>
+            <option value="0.9">0.9</option>
+        </select>
+        <button type="submit">Train Model</button>
+    </form>
 </body>
 </html>

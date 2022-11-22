@@ -14,6 +14,11 @@ import glob
 import matplotlib
 matplotlib.use('Agg')
 
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+import pickle
+
 TIMEOUT_TIME = 300
 
 uuid_file_dict = {}
@@ -26,7 +31,6 @@ sample_files_path = "./static/sample_datasets"
 
 #Loading Sample Datasets
 files = glob.glob(sample_files_path + "/*.csv")
-print(files)
 
 flag = None
 if( "\\" in files[0]):
@@ -143,7 +147,27 @@ def show_data(request, csv_uuid):
 #Function to train Linear Regression model
 @delete_unused_files_decorator
 def linear_regression(request,csv_uuid):
-    return HttpResponse("Linear Regression")
+    
+    data = load_data(csv_uuid)
+    if data is not None:
+        param = {}
+        param["column_list"] = list(data.columns)
+
+        if request.method=="GET":
+            target_column = request.GET.get("target_column")
+            train_test_split = request.GET.get("train_test_split")
+            if(target_column is not None):
+                model,training_rmse,test_rmse = get_trained_linear_regression_model(data,target_column,train_test_split)
+                if(model is None):
+                    param["error"] = "Some Error Occured. Seems your data is not fit for training linear regression models"
+                else:
+                    param["model"] = model
+                    param["training_rmse"] = training_rmse
+                    param["test_rmse"] = test_rmse
+
+        return render(request, 'linear_regression.html',param)
+    else:
+        return redirect("/")
 
 #Function to train logistic Regreesion model
 @delete_unused_files_decorator
@@ -174,3 +198,46 @@ def get_graph(data, graph_type, x_column, y_column, style):
             data=data, x_column=x_column, y_column=y_column, style=style)
     
     return plot
+
+def get_trained_linear_regression_model(data,target_column,train_test_ratio):
+
+    #First Checking if all the columns are numeric ( Currently Only supporting Numeric Values )
+    try:
+        data = data.astype(float)
+    except:
+        return (None,None,None)
+
+    
+    y = data[target_column]
+    X = data.drop(target_column,axis = 1)
+
+    X = np.asarray(X)
+    y = np.asarray(y)
+
+    X_train,X_test,y_train,y_test = train_test_split(X,y,random_state = 42,train_size = float(train_test_ratio))
+
+    scaler = StandardScaler().fit(X_train)
+    X_train = scaler.transform(X_train)
+    X_test = scaler.transform(X_test)
+
+    model = LinearRegression()
+
+    model.fit(X_train,y_train)
+
+    y_train_pred = model.predict(X_train)
+    y_test_pred = model.predict(X_test)
+
+    train_rmse = rmse(y_train_pred,y_train)/y_train.shape[0]
+    test_rmse = rmse(y_test_pred,y_test)/y_test.shape[0]
+
+    model_file = pickle.dumps(model)
+    print(model_file)
+    print(train_rmse)
+    print(train_rmse)
+    return (model,train_rmse,test_rmse)
+        
+
+def rmse(y_pred,y_actual):
+    
+    rmse = 1/2*np.sum((y_pred-y_actual)**2)
+    return rmse
