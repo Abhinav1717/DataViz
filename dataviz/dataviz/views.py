@@ -29,7 +29,7 @@ files = glob.glob(sample_files_path + "/*.csv")
 for file in files:
     with open(file,"rb") as csvfile_object:
         csvfile = BytesIO(csvfile_object.read())
-        filename = file.split('\\')[-1].split('.')[0]
+        filename = file.split('/')[-1].split('.')[0]
         sample_file__list.append(filename)
         sample_files_image_path_dict[filename] = "sample_datasets_images/"+filename+".jpg"
         uuid_file_dict[filename] = csvfile

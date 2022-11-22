@@ -1,67 +1,178 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Data-Viz | Data</title>
 
-        <script>
-            function downloadImage(plotb64encoded){
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data-Viz | Data</title>
 
-                var image = document.getElementById("plot_image")
-                
-                image_data = image.src
-                var element = document.createElement("a")
-                element.href = image_data
-                element.download = "plot.png"
-                element.click()
-            }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Open+Sans&display=swap');
 
-        </script>
-    </head>
-    <body>
-        <table>
-            <tr>
-                {% for column in data_columns %}
-                <th>{{ column }}</th>
-                {% endfor %}
-            </tr>
-            {% for row in data_values %}
-            <tr>
-                {% for row_value in row%}
-                <td>{{ row_value }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
+        body {
+            /* background-color:rgba(28,26,26,255); */
+            background: url('{% static "bgwhite.webp" %}');
+            font-family: 'Open Sans', sans-serif;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            display: grid;
+            grid-template-rows: 4fr 6fr;
+            width: 100%;
+            height: 100%;
+        }
+        #row1 {
+            display: grid;
+            grid-template-columns: 6fr 4fr;
+        }
+        #row2 {
+            display: grid;
+            grid-template-columns: 6fr 4fr;
+        }
+        #graphform {
+            display: flex;
+            flex-direction: column;
+            margin-top: 0.5rem;
+        }
+        #plot{
+            height: 40vh;
+            margin-top: none;
+        }
+        #desc{
+            padding: 1rem;
+        }
+        .selector{
+            width: 30vw;
+            border: 1px solid black;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            margin: 0 auto;
+            border-radius: 10000px;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        label
+        {   
+            display: inline-block;
+            margin: 0 auto;
+        }
+        .button {
+            padding: 0.5rem;
+            transition: all 0.2s;
+            border-radius: 10000px;
+            font-family: 'Open Sans', sans-serif;
+            width: fit-content;
+            margin: 1rem auto;
+        }
 
-        <form id="graphform" method="get">
-            <label for="graph">Choose a Graph: </label>
-            <select id="graph" name="graph">
-                {% for graph_item in graph_list %}
-                <option value="{{graph_item}}">{{graph_item}}</option>
-                {% endfor %}
-            </select>
-            <label for="ycolumn">Y Axis: </label>
-            <select id="ycolumn" name="ycolumn">
-                {% for ycolumn in data_columns %}
-                <option value="{{ycolumn}}">{{ycolumn}}</option>
-                {% endfor %}
-            </select>
-            <label for="xcolumn">X Axis: </label>
-            <select id="xcolumn" name="xcolumn">
-                <option value = " "> </option>
-                {% for xcolumn in data_columns %}
-                <option value="{{xcolumn}}">{{xcolumn}}</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Visualize</button>
-        </form>
-        {% if plot %}
-        <img id = "plot_image" src="data:image/png;base64,{{ plot|safe }}">
-        <button onclick="downloadImage()">Download Plot</button>
-        {% endif %}
+        .button:hover {
+            background-color: black;
+            color: white;
+            border-radius: 10000px;
+            padding: 0.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
 
-    </body>
+        table,
+        tr,
+        th,
+        td {
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        tr,
+        th,
+        td {
+            padding: 0.5rem;
+            margin: 0.5rem;
+        }
+
+        table {
+            margin: 1rem auto;
+        }
+        #tablediv{
+            overflow-y: auto; 
+            overflow-x: auto;
+        }
+    </style>
+
+    <script>
+        function downloadImage(plotb64encoded) {
+
+            var image = document.getElementById("plot_image")
+
+            image_data = image.src
+            var element = document.createElement("a")
+            element.href = image_data
+            element.download = "plot.png"
+            element.click()
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="row1">
+
+        <div id="tablediv">
+            <table>
+                <tr>
+                    {% for column in data_columns %}
+                    <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+                {% for row in data_values %}
+                <tr>
+                    {% for row_value in row%}
+                    <td>{{ row_value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div id="formdiv">
+            <form id="graphform" method="get">
+                <label for="graph">Choose a Graph: </label>
+                <select id="graph" class="selector" name="graph">
+                    {% for graph_item in graph_list %}
+                    <option value="{{graph_item}}">{{graph_item}}</option>
+                    {% endfor %}
+                </select>
+                <label for="ycolumn">Y Axis: </label>
+                <select id="ycolumn" class="selector" name="ycolumn">
+                    {% for ycolumn in data_columns %}
+                    <option value="{{ycolumn}}">{{ycolumn}}</option>
+                    {% endfor %}
+                </select>
+                <label for="xcolumn">X Axis: </label>
+                <select id="xcolumn" class="selector" name="xcolumn">
+                    {% for xcolumn in data_columns %}
+                    <option value="{{xcolumn}}">{{xcolumn}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="button">Visualize</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="row2">
+        <div id="plot">
+            {% if plot %}
+            <img id="plot_image" src="data:image/png;base64,{{ plot|safe }}">
+            <button class="button" onclick="downloadImage()">Download Plot</button>
+            {% endif %}
+        </div>
+        <div id="desc">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, iste debitis, magnam voluptas, nobis sequi obcaecati inventore quibusdam soluta fuga in quaerat reprehenderit perspiciatis iure laborum optio ad quos praesentium fugit! Ratione saepe asperiores, aspernatur dolorum deleniti quia quibusdam voluptatibus incidunt tempora magnam eos voluptatem excepturi recusandae ex nisi perspiciatis autem veniam. Inventore fugiat voluptatem eum soluta! Quam corrupti dicta obcaecati. Ipsam molestiae sint, autem iure tempore magnam quaerat necessitatibus placeat harum, voluptatum soluta exercitationem nam nisi asperiores numquam aperiam minus esse, corrupti maxime porro repellat earum libero obcaecati! Odit dolor harum molestias iste soluta inventore nemo? Velit, modi corporis?
+        </div>
+    </div>
+
+</body>
+
 </html>
