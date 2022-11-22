@@ -21,5 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home ,name = "home"),
     path('upload',views.upload , name = "upload"),
-    path('<csv_uuid>',views.show_data,name ="showdata")
+    path('<csv_uuid>',views.show_data,name ="showdata"),
+    path('linearRegression/<csv_uuid>',views.linear_regression,name="linearRegression"),
+    path('logisticRegression/<csv_uuid>',views.logistic_regression,name="logisticRegression")
+
 ]

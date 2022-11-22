@@ -1,18 +1,18 @@
-import base64
 from pickle import GET
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib
-matplotlib.use('Agg')
 from io import BytesIO
 import shortuuid
 from . import graphs
 import datetime
 import os
 import glob
+
+import matplotlib
+matplotlib.use('Agg')
 
 TIMEOUT_TIME = 20
 
@@ -37,6 +37,7 @@ for file in files:
 
 
 
+#Graph Configurations
 graph_list = ["Line Graph", "Bar Graph","Scatter Plot","HeXBin Plot"]
 graph_function_dict = {
     "Line Graph": graphs.get_line_graph, 
@@ -45,6 +46,7 @@ graph_function_dict = {
     "HeXBin Plot" : graphs.get_hexbin_plot}
 
 
+#Decorator for checking and deleting files that are not accessed recently
 def delete_unused_files_decorator(func):
     def inner1(*args, **kwargs):
         nowTime = datetime.datetime.now()
@@ -86,9 +88,10 @@ def upload(request):
 
         return redirect("/"+csv_uuid)
     else:
-        return HttpResponse("No File selected")
+        return redirect("/")
 
 
+#Function to load the show data and plot page
 @delete_unused_files_decorator
 def show_data(request, csv_uuid):
     data = load_data(csv_uuid)
@@ -103,11 +106,28 @@ def show_data(request, csv_uuid):
             if (graph_type is not None):
                 plot = get_graph(data, graph_type, x_column, y_column)
                 param["plot"] = plot
+        
+        param['csv_uuid'] = csv_uuid
         return render(request, 'show_data.html', param)
     else:
         return redirect("/")
 
 
+#Function to train Linear Regression model
+@delete_unused_files_decorator
+def linear_regression(request,csv_uuid):
+    return HttpResponse("Linear Regression")
+
+#Function to train logistic Regreesion model
+@delete_unused_files_decorator
+def logistic_regression(request,csv_uuid):
+    return HttpResponse("Logistic Regression")
+
+
+
+# Utility Functions 
+
+#Function to load data from stored dictionary
 def load_data(uuid_key):
     if uuid_key in uuid_file_dict:
         csv_file = uuid_file_dict[uuid_key]
@@ -119,6 +139,7 @@ def load_data(uuid_key):
 
     return data
 
+#Function to plot and return the graph to show_data
 def get_graph(data, graph_type, x_column, y_column):
 
     plot = None
