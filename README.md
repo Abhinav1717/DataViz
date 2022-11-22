@@ -8,7 +8,8 @@ Steps to run the application
 
     i) "pip install virtualenv" to install the virtual environment library
     ii) "virtualenv venv" to create a virtual environment
-    ii) "./venv/Scripts/Activate.ps1" to activate the environment
+    iii) "./venv/Scripts/Activate.ps1" to activate the environment in windows
+         " source venv/bin/activate" to activate the environment in Linux
 
 2) One the virutal environment is activated, use " pip install -r requirements.txt " command to install all the dependencies in the environment
 
