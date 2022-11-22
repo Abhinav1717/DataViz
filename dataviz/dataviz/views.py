@@ -121,7 +121,7 @@ def show_data(request, csv_uuid):
     data = load_data(csv_uuid)
     if data is not None:
         param = {"data_columns": list(data.columns), "data_values": list(
-            data.head().values), "graph_list": graph_list}
+            data.head(7).values), "graph_list": graph_list}
         param["plot"] = None
         param["plot_style_list"] = style_list
         if (request.method == 'GET'):
