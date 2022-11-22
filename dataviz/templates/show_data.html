@@ -18,6 +18,16 @@
                 element.click()
             }
 
+            function redirectToLinearRegression(key){
+
+                window.location.href = "/linearRegression/"+key
+            }
+
+            function redirectToLogisticRegression(key){
+
+                window.location.href = "/logisticRegression/"+key
+            }
+
         </script>
     </head>
     <body>
@@ -58,6 +68,8 @@
             </select>
             <button type="submit">Visualize</button>
         </form>
+        <button id = "{{csv_uuid}}" onclick="redirectToLinearRegression(this.id)">Fit Linear Regression Model</button>
+        <button id = "{{csv_uuid}}" onclick="redirectToLogisticRegression(this.id)">Fit Logistic Regression Model</button>
         {% if plot %}
         <img id = "plot_image" src="data:image/png;base64,{{ plot|safe }}">
         <button onclick="downloadImage()">Download Plot</button>
